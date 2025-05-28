@@ -9,5 +9,5 @@ configMap_data:
   DB_HOST: mongodb-dev.apps11.shop
   SCHEMA_FILE: db/master-data.js
 
-#db_job:
-#  enabled: true
+db_job:
+  enabled: false
