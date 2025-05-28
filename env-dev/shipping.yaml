@@ -6,3 +6,5 @@ configMap_data:
   DB_HOST: mysql-dev.apps11.shop
 
 
+db_job:
+  enabled: false

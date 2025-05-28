@@ -10,4 +10,4 @@ configMap_data:
   SCHEMA_FILE: db/master-data.js
 
 db_job:
-  enabled: false
+  enabled: true

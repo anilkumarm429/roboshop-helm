@@ -13,3 +13,5 @@ configMap_data:
   PAYMENT_HOST: payment
   PAYMENT_PORT: "8080"
 
+db_job:
+  enabled: false
