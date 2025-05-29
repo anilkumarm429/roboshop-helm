@@ -1,10 +1,6 @@
 appName: user
-containerPort: 8080
-serviceType: ClusterIP
 configMap_data:
   MONGO: true
   MONGO_URL: "mongodb://mongodb-dev.apps11.shop:27017/users"
   REDIS_URL: "redis://redis-dev.apps11.shop:6379"
 
-db_job:
-  enabled: false

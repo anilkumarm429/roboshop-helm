@@ -1,6 +1,4 @@
 appName: payment
-containerPort: 8080
-serviceType: ClusterIP
 configMap_data:
   CART_HOST: cart
   CART_PORT: 8080
@@ -10,5 +8,3 @@ configMap_data:
   AMQP_USER: roboshop
   AMQP_PASS: roboshop123
 
-db_job:
-  enabled: false
