@@ -1,3 +1,4 @@
+env: dev
 appName: catalogue
 configMap_data:
   MONGO: true
@@ -5,7 +6,6 @@ configMap_data:
   DB_TYPE: mongo
   APP_GIT_URL: https://github.com/roboshop-devops-project-v3/catalogue
   DB_HOST: mongodb-dev.apps11.shop
-#  SCHEMA_FILE: db/master-data.js
 
 db_job:
   enabled: true
@@ -14,10 +14,10 @@ db_job:
     - master-data
 
 
-#resources:
-#  requests:
-#    memory: "64Mi"
-#    cpu: "30m"
-#  limits:
-#    memory: "128Mi"
-#    cpu: "100m"
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "30m"
+  limits:
+    memory: "128Mi"
+    cpu: "100m"
