@@ -1,51 +1,3 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: {{ .Values.appName }}
-#  labels:
-#    app: {{ .Values.appName }}
-#spec:
-#  replicas: {{ .values.minReplicas }}
-#  selector:
-#    matchLabels:
-#      app: {{ .Values.appName }}
-#  template:
-#    metadata:
-#      labels:
-#        app: {{ .Values.appName }}
-#    spec:
-#      affinity:
-#        nodeAffinity:
-#          requiredDuringSchedulingIgnoredDuringExecution:
-#            nodeSelectorTerms:
-#              - matchExpressions:
-#                  - key: project/name
-#                    operator: In
-#                    values:
-#                      - roboshop
-#      topologySpreadConstraints:
-#        - topologyKey: kubernetes.io/hostname
-#          maxSkew: 1
-#          whenUnsatisfiable: DoNotSchedule
-#          labelSelector:
-#            matchLabels:
-#              app: {{ .Values.appName }}
-#      containers:
-#        - name: {{ .Values.appName }}
-#          image: roboshop84.azurecr.io/roboshop-{{ .Values.appName }}:{{ .Values.appTag }}
-#          ports:
-#            - containerPort: {{ .Values.containerPort }}
-#          envFrom:
-#            - secretRef:
-#                name: {{ .Values.appName }}
-#          resources:
-#            requests:
-#              memory: {{ .Values.resources.requests.memory | quote }}
-#              cpu: {{ .Values.resources.requests.cpu | quote }}
-#            limits:
-#              memory: {{ .Values.resources.limits.memory | quote }}
-#              cpu: {{ .Values.resources.limits.cpu | quote }}
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,7 +5,7 @@ metadata:
   labels:
     app: {{ .Values.appName }}
 spec:
-  replicas: {{ .Values.minReplicas }}
+  replicas: {{ .values.minReplicas }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
