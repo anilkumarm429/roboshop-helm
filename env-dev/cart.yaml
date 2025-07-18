@@ -1,3 +1,18 @@
+#env: dev
+#appName: cart
+#configMap_data:
+#  CATALOGUE_HOST: catalogue
+#  CATALOGUE_PORT: "8080"
+#  REDIS_HOST: redis-dev.apps11.shop
+#
+#resources:
+#  requests:
+#    memory: "64Mi"
+#    cpu: "30m"
+#  limits:
+#    memory: "128Mi"
+#    cpu: "100m"
+
 env: dev
 appName: cart
 configMap_data:
@@ -12,3 +27,5 @@ resources:
   limits:
     memory: "128Mi"
     cpu: "100m"
+
+
