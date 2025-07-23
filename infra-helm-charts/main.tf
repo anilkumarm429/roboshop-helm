@@ -97,3 +97,18 @@ resource "helm_release" "filebeat" {
     file("${path.module}/helm-values/filebeat.yml")
   ]
 }
+
+## Prometheus Stack Helm Chart
+resource "helm_release" "prometheus" {
+
+  depends_on = [null_resource.kubeconfig]
+  name       = "prom-stack"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  namespace  = "devops"
+  wait       = "false"
+
+  values = [
+    file("${path.module}/helm-values/prometheus.yml")
+  ]
+}
