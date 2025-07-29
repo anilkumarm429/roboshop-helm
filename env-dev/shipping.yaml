@@ -27,5 +27,11 @@ resources:
     memory: "4000Mi"
     cpu: "1200m"
 
+probes:
+  liveness:
+    initialDelaySeconds: 60
+  readiness:
+    initialDelaySeconds: 60
 
+minReplicas: 3
 
