@@ -77,9 +77,12 @@ resource "helm_release" "argocd" {
   create_namespace = true
   set = [
     {
-      name  = "server.service.type"
-      value = "LoadBalancer"
+      name  = "server.ingress.hostname"
+      value = "argocd-${var.env}.apps11.shop"
     }
+  ]
+  values = [
+    file("${path.module}/helm-values/argocd.yml")
   ]
 }
 

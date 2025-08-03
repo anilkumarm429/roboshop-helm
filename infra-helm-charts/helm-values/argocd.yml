@@ -1,0 +1,10 @@
+server:
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hostname: "argocd-dev.apps11.shop"
+
+configs:
+  params:
+    server.insecure: true
+
