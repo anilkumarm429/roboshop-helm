@@ -116,6 +116,12 @@ resource "helm_release" "prometheus" {
   values = [
     file("${path.module}/helm-values/prometheus.yml")
   ]
+  set_list = [
+    {
+      name  = "prometheus.ingress.hosts"
+      value = ["prometheus-${var.env}.apps11.shop"]
+    }
+  ]
 }
 
 

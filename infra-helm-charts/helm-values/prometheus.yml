@@ -1,3 +1,5 @@
 prometheus:
-  service:
-    type: LoadBalancer
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+
