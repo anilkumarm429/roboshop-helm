@@ -29,3 +29,7 @@ probes:
     initialDelaySeconds: 30
 
 log_type: raw
+
+ingress:
+  enabled: false
+  host: frontend-dev.apps11.shop
