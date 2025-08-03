@@ -65,6 +65,17 @@ TF
   }
 }
 
+# Direct Helm Chart is a Problem - https://github.com/kubernetes/ingress-nginx/issues/10863
+
+resource "null_resource" "nginx-ingress" {
+  depends_on = [null_resource.kubeconfig]
+  provisioner "local-exec" {
+    command = <<EOF
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+EOF
+  }
+}
+
 resource "helm_release" "argocd" {
   depends_on = [
     null_resource.kubeconfig
