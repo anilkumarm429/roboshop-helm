@@ -142,4 +142,88 @@ resource "helm_release" "prometheus" {
   ]
 }
 
+## External DNS Helm chart
+resource "null_resource" "external-dns-secret" {
+  depends_on = [
+    null_resource.kubeconfig,
+    null_resource.nginx-ingress
+  ]
 
+  provisioner "local-exec" {
+    command = <<EOF
+echo '{
+  "tenantId": "'"${data.vault_generic_secret.azure-sp.data["ARM_TENANT_ID"]}"'",
+  "subscriptionId": "'"${data.vault_generic_secret.azure-sp.data["ARM_SUBSCRIPTION_ID"]}"'",
+  "resourceGroup": "project-1",
+  "aadClientId": "'"${data.vault_generic_secret.azure-sp.data["ARM_CLIENT_ID"]}"'",
+  "aadClientSecret": "'"${data.vault_generic_secret.azure-sp.data["ARM_CLIENT_SECRET"]}"'"
+}' >/tmp/azure.json
+kubectl create secret generic azure-config-file --namespace devops --from-file /tmp/azure.json
+EOF
+  }
+
+}
+
+resource "helm_release" "external-dns" {
+
+  depends_on = [
+    null_resource.kubeconfig,
+    null_resource.nginx-ingress,
+    null_resource.external-dns-secret
+  ]
+  name       = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns/"
+  chart      = "external-dns"
+  namespace  = "devops"
+  wait       = "false"
+  create_namespace = true
+  values = [
+    file("${path.module}/helm-values/external-dns.yml")
+  ]
+}
+
+
+resource "helm_release" "cert-manager" {
+
+  depends_on = [
+    null_resource.kubeconfig,
+    null_resource.nginx-ingress
+  ]
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  namespace  = "devops"
+  wait       = "false"
+  create_namespace = true
+  set = [
+    {
+      name  = "crds.enabled"
+      value = "true"
+    }
+  ]
+}
+
+resource "null_resource" "cert-manager" {
+  depends_on = [null_resource.kubeconfig, helm_release.cert-manager]
+  provisioner "local-exec" {
+    command = <<EOT
+cat <<-EOF > ${path.module}/issuer.yml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    email: anilkumar.mallavarapu429@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+EOF
+kubectl apply -f ${path.module}/issuer.yml
+EOT
+  }
+}
